@@ -7,11 +7,12 @@
     "Leverpostcode": "Shipping Zip",
     "Factuurplaats": "Billing City",
     "Leverplaats": "Shipping City",
-    "Telefoonnummer": "telefoon",
+    "Telefoonnummer": "Billing Phone",
     "Productkolom": "Lineitem name",
     "Kwantiteitkolom": "Lineitem quantity",
-    "Gift": "gift",
     "Bezorgkosten": "Shipping",
+    "Bezorging": "Notes",
+    "Gift": "Lineitem price",
     "Totaalprijs": "Total",
     "Betaald": "Financial Status"
 }

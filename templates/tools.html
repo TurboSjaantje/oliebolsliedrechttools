@@ -135,8 +135,9 @@
         spinner.classList.remove('hidden');
         downloadLink.classList.add('hidden');
 
-        // Start normalization process
-        const response = await fetch('/normalize-shopify', { method: 'POST' });
+        // Start normalization process and send year as a query parameter
+        const year = prompt('Enter the year to normalize the Shopify file for:');
+        const response = await fetch("/normalize-shopify/" + year, { method: 'POST' });
         if (response.ok) {
             const result = await response.json();
             if (result.status === 'started') {
