@@ -1,0 +1,17 @@
+{
+    "Ordernummer": "Name",
+    "Naam": "Billing Name",
+    "Factuuradres": "Billing Street",
+    "Leveradres": "Shipping Street",
+    "Factuurpostcode": "Billing Zip",
+    "Leverpostcode": "Shipping Zip",
+    "Factuurplaats": "Billing City",
+    "Leverplaats": "Shipping City",
+    "Telefoonnummer": "telefoon",
+    "Productkolom": "Lineitem name",
+    "Kwantiteitkolom": "Lineitem quantity",
+    "Gift": "gift",
+    "Bezorgkosten": "Shipping",
+    "Totaalprijs": "Total",
+    "Betaald": "Financial Status"
+}

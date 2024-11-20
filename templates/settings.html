@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid grid-cols-2 gap-4">
+    <!-- Kolommen Belbestand -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Kolommen Belbestand</h2>
+        <form method="POST" action="/settings/belbestand" class="space-y-4">
+            <!-- Accordion Section 1 -->
+            <div x-data="{ open: false }" class="border-b">
+                <button type="button" @click="open = !open" class="w-full flex justify-between items-center py-2 px-4">
+                    <span class="text-lg font-medium">Klantgegevens</span>
+                    <span x-show="!open">+</span>
+                    <span x-show="open">-</span>
+                </button>
+                <div x-show="open" class="px-4 py-4 space-y-4">
+                    <div>
+                        <label for="naam" class="block text-gray-600 mb-2">Naam:</label>
+                        <input type="text" name="Naam" id="naam" value="{{ belbestand.get('Naam', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="adres" class="block text-gray-600 mb-2">Adres:</label>
+                        <input type="text" name="Adres" id="adres" value="{{ belbestand.get('Adres', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="postcode" class="block text-gray-600 mb-2">Postcode:</label>
+                        <input type="text" name="Postcode" id="postcode" value="{{ belbestand.get('Postcode', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="woonplaats" class="block text-gray-600 mb-2">Woonplaats:</label>
+                        <input type="text" name="Woonplaats" id="woonplaats"
+                            value="{{ belbestand.get('Woonplaats', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="telefoonnummer" class="block text-gray-600 mb-2">Telefoonnummer:</label>
+                        <input type="text" name="Telefoonnummer" id="telefoonnummer"
+                            value="{{ belbestand.get('Telefoonnummer', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+            </div>
+            <!-- Accordion Section 2 -->
+            <div x-data="{ open: false }" class="border-b">
+                <button type="button" @click="open = !open" class="w-full flex justify-between items-center py-2 px-4">
+                    <span class="text-lg font-medium">Bestelgegevens</span>
+                    <span x-show="!open">+</span>
+                    <span x-show="open">-</span>
+                </button>
+                <div x-show="open" class="px-4 py-4 space-y-4">
+                    <div class="grid gap-4">
+                        <!-- Oliebollen Fields -->
+                        <div>
+                            <label for="oliebollen_5" class="block text-gray-600 mb-2">Oliebollen (5 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Oliebollen_5" id="oliebollen_5"
+                                    value="{{ belbestand.get('Oliebollen_5', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Oliebollen_5_column" id="oliebollen_5_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Oliebollen_5_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Oliebollen_5_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Oliebollen_5_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="oliebollen_10" class="block text-gray-600 mb-2">Oliebollen (10 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Oliebollen_10" id="oliebollen_10"
+                                    value="{{ belbestand.get('Oliebollen_10', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Oliebollen_10_column" id="oliebollen_10_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Oliebollen_10_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Oliebollen_10_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Oliebollen_10_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="oliebollen_25" class="block text-gray-600 mb-2">Oliebollen (25 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Oliebollen_25" id="oliebollen_25"
+                                    value="{{ belbestand.get('Oliebollen_25', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Oliebollen_25_column" id="oliebollen_25_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Oliebollen_25_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Oliebollen_25_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Oliebollen_25_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="oliebollen_50" class="block text-gray-600 mb-2">Oliebollen (50 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Oliebollen_50" id="oliebollen_50"
+                                    value="{{ belbestand.get('Oliebollen_50', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Oliebollen_50_column" id="oliebollen_50_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Oliebollen_50_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Oliebollen_50_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Oliebollen_50_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <!-- Appelbeignets Fields -->
+                        <div>
+                            <label for="appelbeignets_5" class="block text-gray-600 mb-2">Appelbeignets (5 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Appelbeignets_5" id="appelbeignets_5"
+                                    value="{{ belbestand.get('Appelbeignets_5', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Appelbeignets_5_column" id="appelbeignets_5_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Appelbeignets_5_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Appelbeignets_5_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Appelbeignets_5_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="appelbeignets_10" class="block text-gray-600 mb-2">Appelbeignets (10 stuks):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Appelbeignets_10" id="appelbeignets_10"
+                                    value="{{ belbestand.get('Appelbeignets_10', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Appelbeignets_10_column" id="appelbeignets_10_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Appelbeignets_10_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Appelbeignets_10_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Appelbeignets_10_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <!-- Combinatiepakket Fields -->
+                        <div>
+                            <label for="combinatiepakket_I" class="block text-gray-600 mb-2">Combinatiepakket I (10 Oliebollen, 5 Appelbeignets):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Combinatiepakket_I" id="combinatiepakket_I"
+                                    value="{{ belbestand.get('Combinatiepakket_I', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Combinatiepakket_I_column" id="combinatiepakket_I_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Combinatiepakket_I_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Combinatiepakket_I_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Combinatiepakket_I_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="combinatiepakket_II" class="block text-gray-600 mb-2">Combinatiepakket II (25 Oliebollen, 10 Appelbeignets):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Combinatiepakket_II" id="combinatiepakket_II"
+                                    value="{{ belbestand.get('Combinatiepakket_II', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Combinatiepakket_II_column" id="combinatiepakket_II_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Combinatiepakket_II_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Combinatiepakket_II_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Combinatiepakket_II_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="combinatiepakket_III" class="block text-gray-600 mb-2">Combinatiepakket III (50 Oliebollen, 20 Appelbeignets):</label>
+                            <div class="flex items-center gap-4">
+                                <input type="text" name="Combinatiepakket_III" id="combinatiepakket_III"
+                                    value="{{ belbestand.get('Combinatiepakket_III', '') }}"
+                                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <select name="Combinatiepakket_III_column" id="combinatiepakket_III_column"
+                                    class="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="1" {% if belbestand.get('Combinatiepakket_III_column') == '1' %}selected{% endif %}>1</option>
+                                    <option value="2" {% if belbestand.get('Combinatiepakket_III_column') == '2' %}selected{% endif %}>2</option>
+                                    <option value="3" {% if belbestand.get('Combinatiepakket_III_column') == '3' %}selected{% endif %}>3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+            <!-- Accordion Section 3 -->
+            <div x-data="{ open: false }" class="border-b">
+                <button type="button" @click="open = !open" class="w-full flex justify-between items-center py-2 px-4">
+                    <span class="text-lg font-medium">Betaalgegevens</span>
+                    <span x-show="!open">+</span>
+                    <span x-show="open">-</span>
+                </button>
+                <div x-show="open" class="px-4 py-4 space-y-4">
+                    <div>
+                        <label for="gift" class="block text-gray-600 mb-2">Gift:</label>
+                        <input type="text" name="Gift" id="gift" value="{{ belbestand.get('Gift', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="totaalprijs" class="block text-gray-600 mb-2">Totaalprijs:</label>
+                        <input type="text" name="Totaalprijs" id="totaalprijs"
+                            value="{{ belbestand.get('Totaalprijs', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                    <div>
+                        <label for="betaald" class="block text-gray-600 mb-2">Betaald:</label>
+                        <input type="text" name="Betaald" id="betaald" value="{{ belbestand.get('Betaald', '') }}"
+                            class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+                </div>
+            </div>
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                Save
+            </button>
+        </form>
+    </div>
+
+    <!-- Kolommen Shopify -->
+    <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Kolommen Shopify</h2>
+        <form method="POST" action="/settings/shopifybestand" class="space-y-4">
+            <div>
+                <label for="naam" class="block text-gray-600 mb-2">Naam:</label>
+                <input type="text" name="Naam" id="naam" value="{{ shopify.get('Naam', '') }}"
+                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+            </div>
+            <div>
+                <label for="adres" class="block text-gray-600 mb-2">Adres:</label>
+                <input type="text" name="Adres" id="adres" value="{{ shopify.get('Adres', '') }}"
+                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+            </div>
+            <div>
+                <label for="postcode" class="block text-gray-600 mb-2">Postcode:</label>
+                <input type="text" name="Postcode" id="postcode" value="{{ shopify.get('Postcode', '') }}"
+                    class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+            </div>
+            <button type="submit"
+                class="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                Save
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

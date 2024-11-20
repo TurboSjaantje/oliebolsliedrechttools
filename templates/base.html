@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oliebol Sliedrecht Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- icon -->
+    <link rel="icon" href="../static/image.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+</head>
+<body class="bg-amber-50 text-gray-800 font-sans min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-auto bg-amber-200 shadow-lg h-screen flex flex-col items-center px-3 py-4 mx-auto">
+        <!-- Logo -->
+        <div class="bg-amber-400 rounded-full p-3 mb-8">
+            <img src="../static/image.png" alt="Logo" class="w-8 h-8">
+        </div>
+        <!-- Navigation Links -->
+        <nav class="flex-grow space-y-8">
+            <a href="/" class="flex flex-col items-center text-amber-800 hover:text-amber-600">
+                <i class="fa fa-wrench text-3xl"></i>
+                <span class="text-xs">Tools</span>
+            </a>
+            <a href="/settings" class="flex flex-col items-center text-amber-800 hover:text-amber-600">
+                <i class="fa fa-cog text-3xl"></i>
+                <span class="text-xs">Instellingen</span>
+            </a>
+        </nav>
+        <!-- Footer -->
+        <div class="text-gray-500 text-center"></div>
+            <span class="text-xs">&copy; 2024</span>
+            <span class="text-xs">DaanvdM</span>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-8">
+        <h1 class="text-4xl font-bold text-amber-600 mb-6">Oliebol Sliedrecht Tools</h1>
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="mb-4 space-y-2" style="position: absolute; bottom: 0.5rem; right: 1rem;">
+                        {% for category, message in messages %}
+                            <p class="px-4 py-2 rounded-lg {% if category == 'success' %}bg-green-100 text-green-600{% else %}bg-red-100 text-red-600{% endif %}">
+                                {{ message }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</body>
+</html>
