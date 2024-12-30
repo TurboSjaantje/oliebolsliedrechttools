@@ -9,7 +9,6 @@
     <link rel="icon" href="../static/image.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
 </head>
 <body class="bg-amber-50 text-gray-800 font-sans min-h-screen flex">
     <!-- Sidebar -->
@@ -24,13 +23,17 @@
                 <i class="fa fa-wrench text-3xl"></i>
                 <span class="text-xs">Tools</span>
             </a>
+            <a href="/routemaker" class="flex flex-col items-center text-amber-800 hover:text-amber-600">
+                <i class="fa fa-map text-3xl"></i>
+                <span class="text-xs">Routemaker</span>
+            </a>
             <a href="/settings" class="flex flex-col items-center text-amber-800 hover:text-amber-600">
                 <i class="fa fa-cog text-3xl"></i>
                 <span class="text-xs">Instellingen</span>
             </a>
         </nav>
         <!-- Footer -->
-        <div class="text-gray-500 text-center"></div>
+        <div class="text-gray-500 text-center">
             <span class="text-xs">&copy; 2024</span>
             <span class="text-xs">DaanvdM</span>
         </div>
@@ -40,13 +43,45 @@
     <main class="flex-grow p-8">
         <h1 class="text-4xl font-bold text-amber-600 mb-6">Oliebol Sliedrecht Tools</h1>
         <div>
+            <!-- Flash Messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
+                    <!-- Error Modal -->
+                    <div
+                        x-data="{ showError: false }"
+                        x-init="
+                            () => {
+                                if (document.querySelectorAll('.flash-error').length > 0) {
+                                    showError = true;
+                                }
+                            }
+                        "
+                        x-show="showError"
+                        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+                        style="display: none;"
+                    >
+                        <div class="bg-white rounded-lg shadow-lg p-6 w-96">
+                            <h2 class="text-xl font-bold text-red-600 mb-4">Error</h2>
+                            <ul>
+                                {% for category, message in messages %}
+                                    {% if category == 'error' %}
+                                        <li class="flash-error text-red-600 mb-2">{{ message }}</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                            <button @click="showError = false" class="mt-4 px-4 py-2 bg-red-600 text-white rounded">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Standard Flash Messages -->
                     <div class="mb-4 space-y-2" style="position: absolute; bottom: 0.5rem; right: 1rem;">
                         {% for category, message in messages %}
-                            <p class="px-4 py-2 rounded-lg {% if category == 'success' %}bg-green-100 text-green-600{% else %}bg-red-100 text-red-600{% endif %}">
-                                {{ message }}
-                            </p>
+                            {% if category != 'error' %}
+                                <p class="px-4 py-2 rounded-lg {% if category == 'success' %}bg-green-100 text-green-600{% else %}bg-red-100 text-red-600{% endif %}">
+                                    {{ message }}
+                                </p>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 {% endif %}
@@ -54,5 +89,29 @@
             {% block content %}{% endblock %}
         </div>
     </main>
+
+    <!-- JavaScript for Polling Errors -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function checkErrors() {
+                fetch('/check-errors')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'error') {
+                            // Dynamically show the modal with the error message
+                            const modalError = document.querySelector('.flash-error');
+                            if (modalError) {
+                                modalError.textContent = data.message;
+                                document.querySelector('[x-data]').__x.$data.showError = true;
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error checking for errors:', error));
+            }
+
+            // Poll for errors every 5 seconds
+            setInterval(checkErrors, 5000);
+        });
+    </script>
 </body>
 </html>

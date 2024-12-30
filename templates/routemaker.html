@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="bg-white rounded-lg shadow p-6">
+        <!-- Instructions Section -->
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-700">Instructions</h2>
+            <p class="text-gray-600">Upload hier een bestand dat de volgende elementen bevat: 3 tablladen met hierop de
+                bezorgbestellingen van dat dagdeel. De named van de tabbladen zijn als volgt: dagdeel 1, dagdeel 2,
+                dagdeel 3</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div>
+                    {% for category, message in messages %}
+                        <div class="p-2 my-2 rounded-lg text-white bg-{{ 'green-500' if category == 'success' else 'red-500' }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- File Upload Section -->
+        <div class="grid grid-cols-1 gap-4 mb-6">
+            <div class="p-4 rounded-lg shadow {{ 'bg-green-100' if uploaded_file else 'bg-gray-100' }}">
+                <h3 class="text-lg font-semibold text-gray-700">Upload File</h3>
+                {% if uploaded_file %}
+                    <p class="text-sm text-gray-600">Uploaded: {{ uploaded_file }}</p>
+                    <form action="/remove/file" method="POST" class="mt-2">
+                        <button type="submit" class="text-red-600 hover:underline">Remove</button>
+                    </form>
+                {% else %}
+                    <p class="text-sm text-gray-500">No file uploaded.</p>
+                {% endif %}
+
+                {% if not uploaded_file %}
+                    <form action="/upload-routemaker" method="POST" enctype="multipart/form-data" class="mt-4">
+                        <div>
+                            <label for="file3" class="block text-gray-600 mb-2">Select a Routemaker file to
+                                upload:</label>
+                            <input type="file" name="file3" id="file3"
+                                   class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                        </div>
+                        <button type="submit"
+                                class="w-full bg-amber-500 text-white py-2 px-4 rounded-lg hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 mt-4">
+                            Upload Routemaker File
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Dagdeel and Aantal Bezorgers Inputs -->
+        {% if uploaded_file %}
+            <form id="route-generation-form">
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <div class="p-4 rounded-lg shadow bg-gray-100">
+                        <label for="dagdeel" class="block text-gray-600 mb-2">Dagdeel:</label>
+                        <select id="dagdeel" name="dagdeel"
+                                class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                                required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="p-4 rounded-lg shadow bg-gray-100">
+                        <label for="aantal_bezorgers" class="block text-gray-600 mb-2">Aantal Bezorgers:</label>
+                        <input type="number" id="aantal_bezorgers" name="aantal_bezorgers" min="1"
+                               class="border rounded-lg w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                               required>
+                    </div>
+                </div>
+            </form>
+        {% endif %}
+
+        <!-- Generate Routes Button -->
+        <div class="p-4 rounded-lg shadow {{ 'bg-green-100' if uploaded_file else 'bg-gray-100' }}">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Generate Routes</h3>
+            <p class="text-sm text-gray-500 mb-4">Upload a file to enable this button.</p>
+            {% if uploaded_file %}
+                <button id="generate-routes-button"
+                        class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600">
+                    Maak Routes
+                </button>
+                <div id="loading-spinner" class="hidden mt-4 text-gray-500">Processing... Please wait.</div>
+                <div id="download-link" class="hidden mt-4">
+                    <a href="/download-routes" class="text-blue-600 hover:underline">Download Routes File</a>
+                </div>
+            {% else %}
+                <button class="bg-gray-300 text-gray-500 py-1 px-2 rounded-lg cursor-not-allowed" disabled>
+                    Disabled
+                </button>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('generate-routes-button')?.addEventListener('click', async () => {
+            const spinner = document.getElementById('loading-spinner');
+            const downloadLink = document.getElementById('download-link');
+
+            // Collect form data
+            const dagdeel = document.getElementById('dagdeel').value;
+            const aantalBezorgers = document.getElementById('aantal_bezorgers').value;
+
+            // Show spinner and hide the download link
+            spinner.classList.remove('hidden');
+            downloadLink.classList.add('hidden');
+
+            // Start route generation process
+            const response = await fetch('/generate-routes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    dagdeel,
+                    aantal_bezorgers: aantalBezorgers
+                })
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result.status === 'started') {
+                    // Poll the backend until the routes file is ready
+                    const interval = setInterval(async () => {
+                        const res = await fetch('/download-routes', {method: 'HEAD'});
+                        if (res.ok) {
+                            clearInterval(interval);
+                            spinner.classList.add('hidden');
+                            downloadLink.classList.remove('hidden');
+                        }
+                    }, 1000);
+                } else {
+                    alert("Failed to start route generation.");
+                }
+            }
+        });
+
+    </script>
+{% endblock %}
